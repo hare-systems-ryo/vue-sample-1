@@ -7,10 +7,10 @@ const TimeStamp = () => {
 
 interface State {
   listA: {
-    [ts: string]: ListRowA;
+    [key: string]: ListRowA;
   };
   listB: {
-    [ts: string]: ListRowB;
+    [key: string]: ListRowB;
   };
 }
 
@@ -18,7 +18,6 @@ interface ListRowA {
   data: { a: number; b: number };
   sum: ComputedRef<number> | Ref<number>;
 }
-
 interface ListRowB {
   data: { a: number; b: number };
 }
@@ -81,9 +80,18 @@ setTimeout(() => {
   appendListA();
   appendListB();
 }, 10);
+
+class Hoge {
+  public state = reactive({ step: 0 });
+  public step() {
+    this.state.step += 1;
+  }
+}
+const hoge = new Hoge();
 </script>
 <template>
   <div class="container-fluid">
+    <div class="" @click="hoge.step()">hoge{{ hoge.state.step }}</div>
     <div class="card mt-3">
       <div class="card-header text-white bg-primary">
         Vue reactiveの中にcomputed
