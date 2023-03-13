@@ -48,9 +48,23 @@ const tsListB = computed(() => {
   return Object.keys(state.listB);
 });
 
-const sumListB = computed(() => (ts: string, a: number, b: number) => {
-  console.log('listB', ts, 'computed', a, b);
-  return a + b;
+const sumListB = computed(() => (ts: string, row: ListRowB) => {
+  console.log('listB', ts, 'computed', row);
+  return row.data.a + row.data.b;
+});
+const sumList = computed(() => {
+  console.log('sumList');
+  return Object.keys(state.listB)
+    .map((key) => {
+      return {
+        key: key,
+        value: state.listB[key].data.a + state.listB[key].data.b,
+      };
+    })
+    .reduce((ret, row) => {
+      ret[row.key] = row.value;
+      return ret;
+    }, {} as { [key: string]: number });
 });
 
 const sumListBFunc = (ts: string, a: number, b: number) => {
@@ -180,13 +194,7 @@ const hoge = new Hoge();
                   <div>data: {{ state.listB[ts].data }}</div>
                   <div>
                     sum:
-                    {{
-                      sumListB(
-                        ts,
-                        state.listB[ts].data.a,
-                        state.listB[ts].data.b
-                      )
-                    }}
+                    {{ sumListB(ts, state.listB[ts]) }}
                   </div>
                 </div>
               </div>
@@ -194,6 +202,7 @@ const hoge = new Hoge();
           </div>
         </template>
       </div>
+      {{ sumList }}
     </div>
   </div>
   <teleport to="#teleport"></teleport>
